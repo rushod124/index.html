@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catch the Cat 🐱</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 20px;
+        text-shadow: 2px 2px 5px black;
+    }
+
+    #gameArea {
+        width: 500px;
+        height: 400px;
+        margin: 20px auto;
+        position: relative;
+        border-radius: 15px;
+        border: 3px solid white;
+        background: rgba(0,0,0,0.3);
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    #cat {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        cursor: pointer;
+        transition: 0.4s ease;
+        user-select: none;
+        font-size: 45px;
+    }
+
+    #score, #timer {
+        font-size: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: black;
+        color: white;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🐱 Catch the Cat Game</h1>
+
+<p id="score">Score: 0</p>
+<p id="timer">Time: 20</p>
+
+<button onclick="startGame()">Start Game</button>
+
+<div id="gameArea">
+    <div id="cat">🐱</div>
+</div>
+
+<script>
+let score = 0;
+let time = 20;
+let timerInterval;
+let moveInterval;
+
+const cat = document.getElementById("cat");
+
+function moveCat() {
+    let x = Math.random() * 440;
+    let y = Math.random() * 340;
+
+    cat.style.left = x + "px";
+    cat.style.top = y + "px";
+}
+
+cat.onclick = function() {
+    score++;
+    document.getElementById("score").innerText = "Score: " + score;
+
+    // small delay so it feels natural
+    setTimeout(moveCat, 150);
+};
+
+function startGame() {
+    score = 0;
+    time = 20;
+
+    document.getElementById("score").innerText = "Score: 0";
+    document.getElementById("timer").innerText = "Time: 20";
+
+    moveCat();
+
+    clearInterval(timerInterval);
+    clearInterval(moveInterval);
+
+    // slower movement now 😎
+    moveInterval = setInterval(moveCat, 1200);
+
+    timerInterval = setInterval(() => {
+        time--;
+        document.getElementById("timer").innerText = "Time: " + time;
+
+        if (time <= 0) {
+            clearInterval(timerInterval);
+            clearInterval(moveInterval);
+            alert("Game Over! Your score: " + score);
+        }
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
